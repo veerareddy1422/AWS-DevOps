@@ -1,0 +1,11 @@
+- name: update in ece group slave servers
+  hosts: all
+  tasks:
+    - name: ensure that bye.txt file is created
+      file:
+        path: /home/ec2-user/bye.txt
+        state: touch
+    - name: ensure that susmitha directory is created
+      file:
+        path: /home/ec2-user/susmitha
+        state: directory

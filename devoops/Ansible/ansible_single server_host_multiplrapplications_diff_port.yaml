@@ -1,0 +1,36 @@
+- name: install packages in the slave server
+  hosts: siri
+  become: yes
+  tasks:
+    - name: ensure that git is installled
+      package:
+        name: git
+        state: present
+    - name: ensure that httpd is installled
+      package:
+        name: httpd
+        state: present
+    - name: ensure that httpd is started
+      service:
+        name: httpd
+        state: started
+    - name: ensure that httpd is enabled
+      service:
+        name: httpd
+        enabled: yes
+    - name: ensure that clone tha food repositorie
+      git:
+        repo: https://github.com/veerareddy1422/food.git
+        dest: /var/www/html/food
+    - name: ensure that clone the ecomm repositorie
+      git:
+        repo: https://github.com/veerareddy1422/ecomm.git
+        dest: /var/www/html/ecomm
+    - name: move the conf file in to the slave
+      copy:
+        src: /home/ec2-user/httpd.conf
+        dest: /etc/httpd/conf/httpd.conf
+    - name: restart the httpd server
+      service:
+        name: httpd
+        state: restarted

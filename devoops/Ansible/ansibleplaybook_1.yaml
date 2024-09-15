@@ -1,0 +1,7 @@
+- name: update in all slave servers
+  hosts: all
+  tasks:
+    - name: ensure that hai.txt file is created
+      file:
+        path: /home/ec2-user/hai.txt
+        state: absent

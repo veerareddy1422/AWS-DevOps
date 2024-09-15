@@ -1,0 +1,18 @@
+- name: update in ece group slave servers
+  hosts: all
+  tasks:
+    - name: ensure that bye.txt file is deleted
+      file:
+        path: /home/ec2-user/bye.txt
+        state: absent
+    - name: ensure that jawahar directory is created
+      file:
+        path: /home/ec2-user/jawahar
+        state: directory
+- name: update in all slave groups
+  hosts: cse
+  tasks:
+    - name: dowmload sample pdf files
+      get_url:
+        url: https://file-examples.com/index.php/sample-documents-download/sample-pdf-download/
+        dest: /home/ec2-user/veera.pdf

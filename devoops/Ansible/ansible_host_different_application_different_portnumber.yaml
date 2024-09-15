@@ -1,0 +1,61 @@
+- name: install packages in the slave servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: ensure that git is installed the slave servers
+      package:
+        name: git
+        state: present
+    - name: ensure that httpd is installed the slave servers
+      package:
+        name: httpd
+        state: present
+    - name: ensure that httpd is started in  the slave servers
+      service:
+        name: httpd
+        state: started
+    - name: ensure that httpd is enabled in  the slave servers
+      service:
+        name: httpd
+        enabled: yes
+- name: clone the git repo in the veera slave server
+  hosts: veera
+  become: yes
+  tasks:
+    - name: clone the food repo in the veera reposataroy
+      git:
+        repo: https://github.com/GOUSERABBANI44/food.git
+        dest: /var/www/html/
+- name: clone the git repositorie in the siri slave server
+  hosts: siri
+  become: yes
+  tasks:
+    - name: clone ecomm repositories in tha siri slave server
+      git:
+        repo: https://github.com/GOUSERABBANI44/ecomm.git
+        dest: /var/www/html/
+
+- name: change the port number in veera slave server to host food application
+  hosts: veera
+  become: yes
+  tasks:
+    - name: ensure the change the port number
+      copy:
+        src: /home/ec2-user/veera.conf
+        dest: /etc/httpd/conf/httpd.conf
+    - name: to restart the veera slave server
+      service:
+        name: httpd
+        state: restarted
+- name: change the port number in siri slave server to host food application
+  hosts: siri
+  become: yes
+  tasks:
+    - name: ensure the change the port number
+      copy:
+        src: /home/ec2-user/httpd.conf
+        dest: /etc/httpd/conf/httpd.conf
+    - name: to restart the siri slave server
+      service:
+        name: httpd
+        state: restarted

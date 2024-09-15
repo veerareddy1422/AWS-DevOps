@@ -1,0 +1,33 @@
+- name: install httpd server using package module
+  hosts: veera
+  tasks:
+    - name: install httpd server
+      become: yes
+      package:
+        name: httpd
+        state: present
+        update_cache: yes
+    - name: start the httpd
+      become: yes
+      service:
+        name: httpd
+        state: started
+    - name: enable the httpd
+      become: yes
+      service:
+        name: httpd
+        enabled: yes
+- name: install Git package
+  hosts: veera
+  tasks:
+    - name: install git
+      become: yes
+      package:
+        name: git
+        state: present
+
+    - name: clone the code
+      become: yes
+      git:
+        repo: https://github.com/GOUSERABBANI44/ecomm.git
+        dest: /var/www/html/                         
